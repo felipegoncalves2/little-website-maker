@@ -44,11 +44,11 @@ const SupplyJustificationForm = () => {
   };
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-  const MAX_TEXT_LENGTH = 2000; // Maximum text length for justification
+  const MAX_TEXT_LENGTH = 250; // Maximum text length for justification
 
   // Security: Input sanitization
   const sanitizeInput = useCallback((input: string): string => {
-    return DOMPurify.sanitize(input.trim(), { 
+    return DOMPurify.sanitize(input, { 
       ALLOWED_TAGS: [], 
       ALLOWED_ATTR: [] 
     });
@@ -89,17 +89,17 @@ const SupplyJustificationForm = () => {
 
   // Security: Text validation
   const validateText = useCallback((text: string, minLength = 0): { isValid: boolean; error?: string } => {
-    const sanitized = sanitizeInput(text);
+    const trimmedText = text.trim();
     
-    if (sanitized.length === 0) {
+    if (trimmedText.length === 0) {
       return { isValid: false, error: "Este campo é obrigatório." };
     }
     
-    if (minLength > 0 && sanitized.length < minLength) {
+    if (minLength > 0 && trimmedText.length < minLength) {
       return { isValid: false, error: `Este campo deve ter no mínimo ${minLength} caracteres.` };
     }
     
-    if (sanitized.length > MAX_TEXT_LENGTH) {
+    if (trimmedText.length > MAX_TEXT_LENGTH) {
       return { isValid: false, error: `O texto deve ter no máximo ${MAX_TEXT_LENGTH} caracteres.` };
     }
 
@@ -119,7 +119,7 @@ const SupplyJustificationForm = () => {
     }
 
     return { isValid: true };
-  }, [sanitizeInput]);
+  }, []);
 
   // Validate required fields
   const validateRequiredFields = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
@@ -188,8 +188,8 @@ const SupplyJustificationForm = () => {
       [name]: ""
     }));
 
-    // Sanitize input for text fields
-    const sanitizedValue = name === 'justificativa' ? sanitizeInput(value) : value;
+    // For justificativa, preserve spaces and don't trim automatically
+    const sanitizedValue = name === 'justificativa' ? value : sanitizeInput(value);
     
     setFormData(prev => ({
       ...prev,
@@ -473,10 +473,10 @@ const SupplyJustificationForm = () => {
               {/* Campos editáveis */}
               <div className="space-y-4 border-t border-border/50 pt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="justificativa" className="flex items-center gap-2 text-foreground">
-                    <FileText className="w-4 h-4 text-primary" />
-                    Justificativa (mínimo 15 caracteres) <span className="text-destructive">*</span>
-                  </Label>
+                   <Label htmlFor="justificativa" className="flex items-center gap-2 text-foreground">
+                     <FileText className="w-4 h-4 text-primary" />
+                     Justificativa (15-250 caracteres) <span className="text-destructive">*</span>
+                   </Label>
                   <Textarea
                     id="justificativa"
                     name="justificativa"
