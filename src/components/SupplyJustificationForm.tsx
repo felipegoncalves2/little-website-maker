@@ -345,11 +345,12 @@ const SupplyJustificationForm = () => {
       <div className="max-w-2xl mx-auto">
         {/* Header da TECHUB */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <h1 className="text-2xl font-bold text-foreground">TECHUB</h1>
+          <div className="inline-flex items-center justify-center mb-4">
+            <img 
+              src="/lovable-uploads/ddca40be-9bd7-4c6f-8151-cc65519b8457.png" 
+              alt="TECHUB Logo" 
+              className="h-12 w-auto"
+            />
           </div>
           <p className="text-muted-foreground">Sistema de Justificativa de Troca Prematura</p>
         </div>
