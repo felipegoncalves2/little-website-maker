@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* TECHUB Brand Colors - Gelo, Cinza claro, Verde fluorescente, Preto */
+    --background: 200 20% 97%; /* Gelo/Ice background */
+    --foreground: 0 0% 15%; /* Preto suave para texto */
+
+    --card: 0 0% 100%; /* Branco para cards */
+    --card-foreground: 0 0% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
+
+    --primary: 120 100% 40%; /* Verde fluorescente TECHUB */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 15% 95%; /* Cinza claro */
+    --secondary-foreground: 0 0% 15%;
+
+    --muted: 200 10% 90%; /* Cinza muito claro */
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 120 100% 40%; /* Verde fluorescente como accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 15% 88%; /* Cinza claro para bordas */
+    --input: 0 0% 100%; /* Fundo branco para inputs */
+    --ring: 120 100% 40%; /* Verde fluorescente para focus */
+
+    /* Gradientes TECHUB */
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 40%), hsl(120 80% 50%));
+    --gradient-background: linear-gradient(180deg, hsl(200 20% 97%), hsl(200 15% 95%));
+    
+    /* Sombras elegantes */
+    --shadow-soft: 0 4px 20px -2px hsl(200 15% 80% / 0.3);
+    --shadow-focus: 0 0 0 3px hsl(120 100% 40% / 0.2);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode mantém a identidade TECHUB */
+    --background: 0 0% 8%; /* Preto suave */
+    --foreground: 200 20% 95%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 200 20% 95%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 200 20% 95%;
+
+    --primary: 120 100% 45%; /* Verde mais claro no dark */
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 200 20% 95%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 200 10% 65%;
+
+    --accent: 120 100% 45%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 25%;
+    --input: 0 0% 18%;
+    --ring: 120 100% 45%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
