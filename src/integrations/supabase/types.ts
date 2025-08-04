@@ -14,69 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      anexosjustify: {
+      prematurajustify: {
         Row: {
-          content: string | null
-          created_at: string | null
-          embedding: string | null
+          download: string | null
+          filename: string | null
           id: string
-          metadata: Json | null
+          justify: string | null
+          lastdate: string | null
+          lastlevel: string | null
+          serialnumber: string | null
+          supplynumber: string | null
         }
         Insert: {
-          content?: string | null
-          created_at?: string | null
-          embedding?: string | null
-          id?: string
-          metadata?: Json | null
-        }
-        Update: {
-          content?: string | null
-          created_at?: string | null
-          embedding?: string | null
-          id?: string
-          metadata?: Json | null
-        }
-        Relationships: []
-      }
-      supply_justifications: {
-        Row: {
-          attachment_url: string | null
-          created_at: string
+          download?: string | null
+          filename?: string | null
           id: string
-          justification: string
-          last_read_date: string
-          last_read_level: number
-          organizacao: string | null
-          printer_serial_number: string
-          supply_serial_number: string
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          attachment_url?: string | null
-          created_at?: string
-          id?: string
-          justification: string
-          last_read_date: string
-          last_read_level: number
-          organizacao?: string | null
-          printer_serial_number: string
-          supply_serial_number: string
-          updated_at?: string
-          user_id?: string | null
+          justify?: string | null
+          lastdate?: string | null
+          lastlevel?: string | null
+          serialnumber?: string | null
+          supplynumber?: string | null
         }
         Update: {
-          attachment_url?: string | null
-          created_at?: string
+          download?: string | null
+          filename?: string | null
           id?: string
-          justification?: string
-          last_read_date?: string
-          last_read_level?: number
-          organizacao?: string | null
-          printer_serial_number?: string
-          supply_serial_number?: string
-          updated_at?: string
-          user_id?: string | null
+          justify?: string | null
+          lastdate?: string | null
+          lastlevel?: string | null
+          serialnumber?: string | null
+          supplynumber?: string | null
         }
         Relationships: []
       }
