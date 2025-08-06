@@ -15,6 +15,7 @@ interface FormData {
   dataUltimaLeitura: string;
   nivelUltimaLeitura: string;
   organizacao: string;
+  codigoProjeto: string;
   justificativa: string;
   anexo: File | null;
 }
@@ -26,6 +27,7 @@ const SupplyJustificationForm = () => {
     dataUltimaLeitura: "",
     nivelUltimaLeitura: "",
     organizacao: "",
+    codigoProjeto: "",
     justificativa: "",
     anexo: null,
   });
@@ -171,6 +173,7 @@ const SupplyJustificationForm = () => {
       dataUltimaLeitura: validateUrlParam(urlParams.get("dataUltimaLeitura")),
       nivelUltimaLeitura: validateUrlParam(urlParams.get("nivelUltimaLeitura")),
       organizacao: validateUrlParam(urlParams.get("organizacao")),
+      codigoProjeto: window.location.href,
     }));
     
     // Mascarar URL após preenchimento automático
@@ -262,6 +265,7 @@ const SupplyJustificationForm = () => {
         dataUltimaLeitura: sanitizeInput(formData.dataUltimaLeitura),
         nivelUltimaLeitura: sanitizeInput(formData.nivelUltimaLeitura),
         organizacao: sanitizeInput(formData.organizacao),
+        codigoProjeto: sanitizeInput(formData.codigoProjeto),
         justificativa: sanitizeInput(formData.justificativa)
       };
 
@@ -271,6 +275,7 @@ const SupplyJustificationForm = () => {
       submitData.append("Data da Última Leitura", sanitizedData.dataUltimaLeitura);
       submitData.append("Nível da Última Leitura (%)", sanitizedData.nivelUltimaLeitura);
       submitData.append("Organização", sanitizedData.organizacao);
+      submitData.append("Código do Projeto", sanitizedData.codigoProjeto);
       submitData.append("Justificativa", sanitizedData.justificativa);
       
       if (formData.anexo) {
@@ -466,6 +471,20 @@ const SupplyJustificationForm = () => {
                     id="organizacao"
                     name="organizacao"
                     value={formData.organizacao}
+                    readOnly
+                    className="bg-muted/50 text-muted-foreground cursor-not-allowed"
+                  />
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="codigoProjeto" className="flex items-center gap-2 text-foreground">
+                    <FileText className="w-4 h-4 text-primary" />
+                    Código do Projeto
+                  </Label>
+                  <Input
+                    id="codigoProjeto"
+                    name="codigoProjeto"
+                    value={formData.codigoProjeto}
                     readOnly
                     className="bg-muted/50 text-muted-foreground cursor-not-allowed"
                   />
