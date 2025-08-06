@@ -173,7 +173,7 @@ const SupplyJustificationForm = () => {
       dataUltimaLeitura: validateUrlParam(urlParams.get("dataUltimaLeitura")),
       nivelUltimaLeitura: validateUrlParam(urlParams.get("nivelUltimaLeitura")),
       organizacao: validateUrlParam(urlParams.get("organizacao")),
-      codigoProjeto: window.location.href,
+      codigoProjeto: validateUrlParam(urlParams.get("codigoProjeto")),
     }));
     
     // Mascarar URL após preenchimento automático
@@ -485,7 +485,8 @@ const SupplyJustificationForm = () => {
                     id="codigoProjeto"
                     name="codigoProjeto"
                     value={formData.codigoProjeto}
-                    onChange={handleInputChange}
+                    readOnly
+                    className="bg-muted/50 text-muted-foreground cursor-not-allowed"
                   />
                 </div>
               </div>
