@@ -485,8 +485,7 @@ const SupplyJustificationForm = () => {
                     id="codigoProjeto"
                     name="codigoProjeto"
                     value={formData.codigoProjeto}
-                    readOnly
-                    className="bg-muted/50 text-muted-foreground cursor-not-allowed"
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
