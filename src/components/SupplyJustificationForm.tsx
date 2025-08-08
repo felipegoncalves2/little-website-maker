@@ -10,6 +10,7 @@ import DOMPurify from "dompurify";
 import ThankYouScreen from "./ThankYouScreen";
 
 interface FormData {
+  id: string;
   numeroSerie: string;
   serieSuprimento: string;
   dataUltimaLeitura: string;
@@ -21,16 +22,17 @@ interface FormData {
 }
 
 const SupplyJustificationForm = () => {
-  const [formData, setFormData] = useState<FormData>({
-    numeroSerie: "",
-    serieSuprimento: "",
-    dataUltimaLeitura: "",
-    nivelUltimaLeitura: "",
-    organizacao: "",
-    codigoProjeto: "",
-    justificativa: "",
-    anexo: null,
-  });
+const [formData, setFormData] = useState<FormData>({
+  id: "",
+  numeroSerie: "",
+  serieSuprimento: "",
+  dataUltimaLeitura: "",
+  nivelUltimaLeitura: "",
+  organizacao: "",
+  codigoProjeto: "",
+  justificativa: "",
+  anexo: null,
+});
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -166,20 +168,21 @@ const SupplyJustificationForm = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    setFormData(prev => ({
-      ...prev,
-      numeroSerie: validateUrlParam(urlParams.get("numeroSerie")),
-      serieSuprimento: validateUrlParam(urlParams.get("serieSuprimento")),
-      dataUltimaLeitura: validateUrlParam(urlParams.get("dataUltimaLeitura")),
-      nivelUltimaLeitura: validateUrlParam(urlParams.get("nivelUltimaLeitura")),
-      organizacao: validateUrlParam(urlParams.get("organizacao")),
-      codigoProjeto: validateUrlParam(urlParams.get("codigoProjeto")),
-    }));
+setFormData(prev => ({
+  ...prev,
+  id: validateUrlParam(urlParams.get("id")),
+  numeroSerie: validateUrlParam(urlParams.get("numeroSerie")),
+  serieSuprimento: validateUrlParam(urlParams.get("serieSuprimento")),
+  dataUltimaLeitura: validateUrlParam(urlParams.get("dataUltimaLeitura")),
+  nivelUltimaLeitura: validateUrlParam(urlParams.get("nivelUltimaLeitura")),
+  organizacao: validateUrlParam(urlParams.get("organizacao")),
+  codigoProjeto: validateUrlParam(urlParams.get("codigoProjeto")),
+}));
     
     // Mascarar URL após preenchimento automático
-    if (urlParams.toString()) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
+if (urlParams.toString()) {
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
   }, [validateUrlParam]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -259,28 +262,30 @@ const SupplyJustificationForm = () => {
 
     try {
       // Security: Sanitize all inputs before submission
-      const sanitizedData = {
-        numeroSerie: sanitizeInput(formData.numeroSerie),
-        serieSuprimento: sanitizeInput(formData.serieSuprimento),
-        dataUltimaLeitura: sanitizeInput(formData.dataUltimaLeitura),
-        nivelUltimaLeitura: sanitizeInput(formData.nivelUltimaLeitura),
-        organizacao: sanitizeInput(formData.organizacao),
-        codigoProjeto: sanitizeInput(formData.codigoProjeto),
-        justificativa: sanitizeInput(formData.justificativa)
-      };
+const sanitizedData = {
+  id: sanitizeInput(formData.id),
+  numeroSerie: sanitizeInput(formData.numeroSerie),
+  serieSuprimento: sanitizeInput(formData.serieSuprimento),
+  dataUltimaLeitura: sanitizeInput(formData.dataUltimaLeitura),
+  nivelUltimaLeitura: sanitizeInput(formData.nivelUltimaLeitura),
+  organizacao: sanitizeInput(formData.organizacao),
+  codigoProjeto: sanitizeInput(formData.codigoProjeto),
+  justificativa: sanitizeInput(formData.justificativa)
+};
 
       const submitData = new FormData();
-      submitData.append("Número de Série", sanitizedData.numeroSerie);
-      submitData.append("Série do Suprimento", sanitizedData.serieSuprimento);
-      submitData.append("Data da Última Leitura", sanitizedData.dataUltimaLeitura);
-      submitData.append("Nível da Última Leitura (%)", sanitizedData.nivelUltimaLeitura);
-      submitData.append("Organização", sanitizedData.organizacao);
-      submitData.append("Código do Projeto", sanitizedData.codigoProjeto);
-      submitData.append("Justificativa", sanitizedData.justificativa);
-      
-      if (formData.anexo) {
-        submitData.append("Anexo", formData.anexo);
-      }
+submitData.append("id", sanitizedData.id);
+submitData.append("Número de Série", sanitizedData.numeroSerie);
+submitData.append("Série do Suprimento", sanitizedData.serieSuprimento);
+submitData.append("Data da Última Leitura", sanitizedData.dataUltimaLeitura);
+submitData.append("Nível da Última Leitura (%)", sanitizedData.nivelUltimaLeitura);
+submitData.append("Organização", sanitizedData.organizacao);
+submitData.append("Código do Projeto", sanitizedData.codigoProjeto);
+submitData.append("Justificativa", sanitizedData.justificativa);
+
+if (formData.anexo) {
+  submitData.append("Anexo", formData.anexo);
+}
 
       // Security: Add timeout to prevent hanging requests
       const controller = new AbortController();
