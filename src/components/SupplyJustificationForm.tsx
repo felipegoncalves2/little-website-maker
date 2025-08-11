@@ -291,7 +291,7 @@ if (formData.anexo) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-      const response = await fetch("https://n8n.techub-hml.com.br/webhook-test/justificativa-suprimento", {
+      const response = await fetch("https://webhook.techub-hml.com.br/webhook/justificativa-suprimento", {
         method: "POST",
         body: submitData,
         signal: controller.signal,
