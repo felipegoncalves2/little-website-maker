@@ -17,6 +17,7 @@ interface FormData {
   nivelUltimaLeitura: string;
   organizacao: string;
   codigoProjeto: string;
+  emailJustificou: string;
   justificativa: string;
   anexo: File | null;
 }
@@ -30,6 +31,7 @@ const [formData, setFormData] = useState<FormData>({
   nivelUltimaLeitura: "",
   organizacao: "",
   codigoProjeto: "",
+  emailJustificou: "",
   justificativa: "",
   anexo: null,
 });
@@ -91,80 +93,103 @@ const [formData, setFormData] = useState<FormData>({
     return { isValid: true };
   }, []);
 
-  // Security: Text validation
-  const validateText = useCallback((text: string, minLength = 0): { isValid: boolean; error?: string } => {
-    const trimmedText = text.trim();
-    
-    if (trimmedText.length === 0) {
-      return { isValid: false, error: "Este campo é obrigatório." };
-    }
-    
-    if (minLength > 0 && trimmedText.length < minLength) {
-      return { isValid: false, error: `Este campo deve ter no mínimo ${minLength} caracteres.` };
-    }
-    
-    if (trimmedText.length > MAX_TEXT_LENGTH) {
-      return { isValid: false, error: `O texto deve ter no máximo ${MAX_TEXT_LENGTH} caracteres.` };
-    }
+// Security: Text validation
+const validateText = useCallback((text: string, minLength = 0): { isValid: boolean; error?: string } => {
+  const trimmedText = text.trim();
+  
+  if (trimmedText.length === 0) {
+    return { isValid: false, error: "Este campo é obrigatório." };
+  }
+  
+  if (minLength > 0 && trimmedText.length < minLength) {
+    return { isValid: false, error: `Este campo deve ter no mínimo ${minLength} caracteres.` };
+  }
+  
+  if (trimmedText.length > MAX_TEXT_LENGTH) {
+    return { isValid: false, error: `O texto deve ter no máximo ${MAX_TEXT_LENGTH} caracteres.` };
+  }
 
-    // Check for suspicious patterns (basic XSS/injection protection)
-    const suspiciousPatterns = [
-      /<script/i,
-      /javascript:/i,
-      /on\w+\s*=/i,
-      /data:text\/html/i,
-      /vbscript:/i
-    ];
+  // Check for suspicious patterns (basic XSS/injection protection)
+  const suspiciousPatterns = [
+    /<script/i,
+    /javascript:/i,
+    /on\w+\s*=/i,
+    /data:text\/html/i,
+    /vbscript:/i
+  ];
 
-    for (const pattern of suspiciousPatterns) {
-      if (pattern.test(text)) {
-        return { isValid: false, error: "Conteúdo não permitido detectado." };
-      }
+  for (const pattern of suspiciousPatterns) {
+    if (pattern.test(text)) {
+      return { isValid: false, error: "Conteúdo não permitido detectado." };
     }
+  }
 
-    return { isValid: true };
-  }, []);
+  return { isValid: true };
+}, []);
 
-  // Validate required fields
-  const validateRequiredFields = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
-    const newErrors: Record<string, string> = {};
-    
-    // Validate all required fields
-    if (!formData.numeroSerie.trim()) {
-      newErrors.numeroSerie = "Número de Série é obrigatório.";
+// Email validation
+const validateEmail = useCallback((email: string): { isValid: boolean; error?: string } => {
+  const value = email.trim();
+  if (value.length === 0) {
+    return { isValid: false, error: "E-mail é obrigatório." };
+  }
+  // Simple RFC-like regex for most cases
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(value)) {
+    return { isValid: false, error: "E-mail inválido." };
+  }
+  if (value.length > 254) {
+    return { isValid: false, error: "E-mail muito longo." };
+  }
+  return { isValid: true };
+}, []);
+
+// Validate required fields
+const validateRequiredFields = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
+  const newErrors: Record<string, string> = {};
+  
+  // Validate all required fields
+  if (!formData.numeroSerie.trim()) {
+    newErrors.numeroSerie = "Número de Série é obrigatório.";
+  }
+  
+  if (!formData.serieSuprimento.trim()) {
+    newErrors.serieSuprimento = "Série do Suprimento é obrigatória.";
+  }
+  
+  if (!formData.dataUltimaLeitura.trim()) {
+    newErrors.dataUltimaLeitura = "Data da Última Leitura é obrigatória.";
+  }
+  
+  if (!formData.nivelUltimaLeitura.trim()) {
+    newErrors.nivelUltimaLeitura = "Nível da Última Leitura é obrigatório.";
+  }
+
+  // Validate email (required)
+  const emailValidation = validateEmail(formData.emailJustificou);
+  if (!emailValidation.isValid) {
+    newErrors.emailJustificou = emailValidation.error || "E-mail inválido.";
+  }
+  
+  // Validate justificativa with minimum 15 characters
+  const justificativaValidation = validateText(formData.justificativa, 15);
+  if (!justificativaValidation.isValid) {
+    newErrors.justificativa = justificativaValidation.error || "Justificativa inválida.";
+  }
+  
+  // Validate file if provided
+  if (formData.anexo) {
+    const fileValidation = validateFile(formData.anexo);
+    if (!fileValidation.isValid) {
+      newErrors.anexo = fileValidation.error || "Arquivo inválido.";
     }
-    
-    if (!formData.serieSuprimento.trim()) {
-      newErrors.serieSuprimento = "Série do Suprimento é obrigatória.";
-    }
-    
-    if (!formData.dataUltimaLeitura.trim()) {
-      newErrors.dataUltimaLeitura = "Data da Última Leitura é obrigatória.";
-    }
-    
-    if (!formData.nivelUltimaLeitura.trim()) {
-      newErrors.nivelUltimaLeitura = "Nível da Última Leitura é obrigatório.";
-    }
-    
-    // Validate justificativa with minimum 15 characters
-    const justificativaValidation = validateText(formData.justificativa, 15);
-    if (!justificativaValidation.isValid) {
-      newErrors.justificativa = justificativaValidation.error || "Justificativa inválida.";
-    }
-    
-    // Validate file if provided
-    if (formData.anexo) {
-      const fileValidation = validateFile(formData.anexo);
-      if (!fileValidation.isValid) {
-        newErrors.anexo = fileValidation.error || "Arquivo inválido.";
-      }
-    }
-    
-    return {
-      isValid: Object.keys(newErrors).length === 0,
-      errors: newErrors
-    };
-  }, [formData, validateText, validateFile]);
+  }
+  
+  return {
+    isValid: Object.keys(newErrors).length === 0,
+    errors: newErrors
+  };
+}, [formData, validateText, validateFile, validateEmail]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -202,16 +227,26 @@ if (urlParams.toString()) {
       [name]: sanitizedValue,
     }));
 
-    // Real-time validation for justificativa
-    if (name === 'justificativa' && sanitizedValue) {
-      const validation = validateText(sanitizedValue, 15);
-      if (!validation.isValid) {
-        setErrors(prev => ({
-          ...prev,
-          [name]: validation.error || ""
-        }));
-      }
-    }
+// Real-time validation for justificativa
+if (name === 'justificativa' && sanitizedValue) {
+  const validation = validateText(sanitizedValue, 15);
+  if (!validation.isValid) {
+    setErrors(prev => ({
+      ...prev,
+      [name]: validation.error || ""
+    }));
+  }
+}
+// Real-time validation for e-mail
+if (name === 'emailJustificou' && sanitizedValue) {
+  const validation = validateEmail(sanitizedValue);
+  if (!validation.isValid) {
+    setErrors(prev => ({
+      ...prev,
+      [name]: validation.error || ""
+    }));
+  }
+}
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -270,6 +305,7 @@ const sanitizedData = {
   nivelUltimaLeitura: sanitizeInput(formData.nivelUltimaLeitura),
   organizacao: sanitizeInput(formData.organizacao),
   codigoProjeto: sanitizeInput(formData.codigoProjeto),
+  emailJustificou: sanitizeInput(formData.emailJustificou),
   justificativa: sanitizeInput(formData.justificativa)
 };
 
@@ -281,6 +317,7 @@ submitData.append("Data da Última Leitura", sanitizedData.dataUltimaLeitura);
 submitData.append("Nível da Última Leitura (%)", sanitizedData.nivelUltimaLeitura);
 submitData.append("Organização", sanitizedData.organizacao);
 submitData.append("Código do Projeto", sanitizedData.codigoProjeto);
+submitData.append("email_justificou", sanitizedData.emailJustificou);
 submitData.append("Justificativa", sanitizedData.justificativa);
 
 if (formData.anexo) {
@@ -496,56 +533,78 @@ if (formData.anexo) {
                 </div>
               </div>
 
-              {/* Campos editáveis */}
-              <div className="space-y-4 border-t border-border/50 pt-6">
-                <div className="space-y-2">
-                   <Label htmlFor="justificativa" className="flex items-center gap-2 text-foreground">
-                     <FileText className="w-4 h-4 text-primary" />
-                     Justificativa (15-250 caracteres) <span className="text-destructive">*</span>
-                   </Label>
-                  <Textarea
-                    id="justificativa"
-                    name="justificativa"
-                    value={formData.justificativa}
-                    onChange={handleInputChange}
-                    placeholder="Descreva o motivo da troca prematura do suprimento..."
-                    className={`min-h-[120px] bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary resize-none ${
-                      errors.justificativa ? 'border-destructive focus:border-destructive' : ''
-                    }`}
-                    required
-                    maxLength={MAX_TEXT_LENGTH}
-                  />
-                  {errors.justificativa && (
-                    <p className="text-sm text-destructive">{errors.justificativa}</p>
-                  )}
-                  <div className="text-xs text-muted-foreground text-right">
-                    {formData.justificativa.length}/{MAX_TEXT_LENGTH} caracteres
-                  </div>
-                </div>
+{/* Campos editáveis */}
+<div className="space-y-4 border-t border-border/50 pt-6">
+  <div className="space-y-2">
+    <Label htmlFor="emailJustificou" className="flex items-center gap-2 text-foreground">
+      <FileText className="w-4 h-4 text-primary" />
+      Insira seu E-mail <span className="text-destructive">*</span>
+    </Label>
+    <Input
+      id="emailJustificou"
+      name="emailJustificou"
+      type="email"
+      value={formData.emailJustificou}
+      onChange={handleInputChange}
+      placeholder="seuemail@exemplo.com"
+      className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary ${
+        errors.emailJustificou ? 'border-destructive focus:border-destructive' : ''
+      }`}
+      required
+    />
+    {errors.emailJustificou && (
+      <p className="text-sm text-destructive">{errors.emailJustificou}</p>
+    )}
+  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="anexo" className="flex items-center gap-2 text-foreground">
-                    <Upload className="w-4 h-4 text-primary" />
-                    Anexo (opcional)
-                  </Label>
-                  <Input
-                    id="anexo"
-                    name="anexo"
-                    type="file"
-                    onChange={handleFileChange}
-                    className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 overflow-hidden ${
-                      errors.anexo ? 'border-destructive focus:border-destructive' : ''
-                    }`}
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                  />
-                  {errors.anexo && (
-                    <p className="text-sm text-destructive">{errors.anexo}</p>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    Formatos aceitos: PDF, DOC, DOCX, JPG, PNG (máx. 10MB)
-                  </p>
-                </div>
-              </div>
+  <div className="space-y-2">
+     <Label htmlFor="justificativa" className="flex items-center gap-2 text-foreground">
+       <FileText className="w-4 h-4 text-primary" />
+       Justificativa (15-250 caracteres) <span className="text-destructive">*</span>
+     </Label>
+    <Textarea
+      id="justificativa"
+      name="justificativa"
+      value={formData.justificativa}
+      onChange={handleInputChange}
+      placeholder="Descreva o motivo da troca prematura do suprimento..."
+      className={`min-h-[120px] bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary resize-none ${
+        errors.justificativa ? 'border-destructive focus:border-destructive' : ''
+      }`}
+      required
+      maxLength={MAX_TEXT_LENGTH}
+    />
+    {errors.justificativa && (
+      <p className="text-sm text-destructive">{errors.justificativa}</p>
+    )}
+    <div className="text-xs text-muted-foreground text-right">
+      {formData.justificativa.length}/{MAX_TEXT_LENGTH} caracteres
+    </div>
+  </div>
+
+  <div className="space-y-2">
+    <Label htmlFor="anexo" className="flex items-center gap-2 text-foreground">
+      <Upload className="w-4 h-4 text-primary" />
+      Anexo (opcional)
+    </Label>
+    <Input
+      id="anexo"
+      name="anexo"
+      type="file"
+      onChange={handleFileChange}
+      className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 overflow-hidden ${
+        errors.anexo ? 'border-destructive focus:border-destructive' : ''
+      }`}
+      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+    />
+    {errors.anexo && (
+      <p className="text-sm text-destructive">{errors.anexo}</p>
+    )}
+    <p className="text-xs text-muted-foreground">
+      Formatos aceitos: PDF, DOC, DOCX, JPG, PNG (máx. 10MB)
+    </p>
+  </div>
+</div>
 
               <Button
                 type="submit"
