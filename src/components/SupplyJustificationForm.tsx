@@ -403,226 +403,228 @@ if (formData.anexo) {
           <p className="text-muted-foreground">Sistema de Justificativa de Troca Prematura</p>
         </div>
 
-        <Card className="shadow-[var(--shadow-soft)] border-border/50 bg-card/80 backdrop-blur-sm">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl text-foreground">
-              Justificativa de Troca Prematura de Suprimento
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Preencha os campos abaixo para justificar a troca do suprimento identificada pelo sistema
-            </p>
-            {/* Security Indicator */}
-            <div className="flex items-center justify-center gap-2 mt-4 p-2 bg-muted/30 rounded-lg">
-              <Shield className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">
-                Formulário seguro - Dados validados e criptografados
-              </span>
-            </div>
-          </CardHeader>
-
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Campos pré-preenchidos (readonly) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="numeroSerie" className="flex items-center gap-2 text-foreground">
-                    <Printer className="w-4 h-4 text-primary" />
-                    Número de Série da Impressora <span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="numeroSerie"
-                    name="numeroSerie"
-                    value={formData.numeroSerie}
-                    readOnly
-                    className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
-                      errors.numeroSerie ? 'border-destructive' : ''
-                    }`}
-                  />
-                  {errors.numeroSerie && (
-                    <p className="text-sm text-destructive">{errors.numeroSerie}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="serieSuprimento" className="flex items-center gap-2 text-foreground">
-                    <FileText className="w-4 h-4 text-primary" />
-                    Série do Suprimento <span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="serieSuprimento"
-                    name="serieSuprimento"
-                    value={formData.serieSuprimento}
-                    readOnly
-                    className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
-                      errors.serieSuprimento ? 'border-destructive' : ''
-                    }`}
-                  />
-                  {errors.serieSuprimento && (
-                    <p className="text-sm text-destructive">{errors.serieSuprimento}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="dataUltimaLeitura" className="flex items-center gap-2 text-foreground">
-                    <Calendar className="w-4 h-4 text-primary" />
-                    Data/Hora da Última Leitura <span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="dataUltimaLeitura"
-                    name="dataUltimaLeitura"
-                    type="datetime-local"
-                    value={formData.dataUltimaLeitura}
-                    readOnly
-                    className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
-                      errors.dataUltimaLeitura ? 'border-destructive' : ''
-                    }`}
-                  />
-                  {errors.dataUltimaLeitura && (
-                    <p className="text-sm text-destructive">{errors.dataUltimaLeitura}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="nivelUltimaLeitura" className="flex items-center gap-2 text-foreground">
-                    <Gauge className="w-4 h-4 text-primary" />
-                    Nível da Última Leitura (%) <span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="nivelUltimaLeitura"
-                    name="nivelUltimaLeitura"
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={formData.nivelUltimaLeitura}
-                    readOnly
-                    className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
-                      errors.nivelUltimaLeitura ? 'border-destructive' : ''
-                    }`}
-                  />
-                  {errors.nivelUltimaLeitura && (
-                    <p className="text-sm text-destructive">{errors.nivelUltimaLeitura}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="organizacao" className="flex items-center gap-2 text-foreground">
-                    <FileText className="w-4 h-4 text-primary" />
-                    Organização
-                  </Label>
-                  <Input
-                    id="organizacao"
-                    name="organizacao"
-                    value={formData.organizacao}
-                    readOnly
-                    className="bg-muted/50 text-muted-foreground cursor-not-allowed"
-                  />
-                </div>
-
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="codigoProjeto" className="flex items-center gap-2 text-foreground">
-                    <FileText className="w-4 h-4 text-primary" />
-                    Código do Projeto
-                  </Label>
-                  <Input
-                    id="codigoProjeto"
-                    name="codigoProjeto"
-                    value={formData.codigoProjeto}
-                    readOnly
-                    className="bg-muted/50 text-muted-foreground cursor-not-allowed"
-                  />
-                </div>
+        <div className="rounded-3xl p-3 sm:p-4 md:p-6 bg-[hsl(var(--form-backdrop)/0.12)]">
+          <Card className="shadow-[var(--shadow-soft)] border-border/50 bg-card/80 backdrop-blur-sm">
+            <CardHeader className="text-center">
+              <CardTitle className="text-xl text-foreground">
+                Justificativa de Troca Prematura de Suprimento
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Preencha os campos abaixo para justificar a troca do suprimento identificada pelo sistema
+              </p>
+              {/* Security Indicator */}
+              <div className="flex items-center justify-center gap-2 mt-4 p-2 bg-muted/30 rounded-lg">
+                <Shield className="w-4 h-4 text-primary" />
+                <span className="text-xs text-muted-foreground">
+                  Formulário seguro - Dados validados e criptografados
+                </span>
               </div>
+            </CardHeader>
 
-{/* Campos editáveis */}
-<div className="space-y-4 border-t border-border/50 pt-6">
-  <div className="space-y-2">
-    <Label htmlFor="emailJustificou" className="flex items-center gap-2 text-foreground">
-      <FileText className="w-4 h-4 text-primary" />
-      Insira seu E-mail <span className="text-destructive">*</span>
-    </Label>
-    <Input
-      id="emailJustificou"
-      name="emailJustificou"
-      type="email"
-      value={formData.emailJustificou}
-      onChange={handleInputChange}
-      placeholder="seuemail@exemplo.com"
-      className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary ${
-        errors.emailJustificou ? 'border-destructive focus:border-destructive' : ''
-      }`}
-      required
-    />
-    {errors.emailJustificou && (
-      <p className="text-sm text-destructive">{errors.emailJustificou}</p>
-    )}
-  </div>
-
-  <div className="space-y-2">
-     <Label htmlFor="justificativa" className="flex items-center gap-2 text-foreground">
-       <FileText className="w-4 h-4 text-primary" />
-       Justificativa (15-250 caracteres) <span className="text-destructive">*</span>
-     </Label>
-    <Textarea
-      id="justificativa"
-      name="justificativa"
-      value={formData.justificativa}
-      onChange={handleInputChange}
-      placeholder="Descreva o motivo da troca prematura do suprimento..."
-      className={`min-h-[120px] bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary resize-none ${
-        errors.justificativa ? 'border-destructive focus:border-destructive' : ''
-      }`}
-      required
-      maxLength={MAX_TEXT_LENGTH}
-    />
-    {errors.justificativa && (
-      <p className="text-sm text-destructive">{errors.justificativa}</p>
-    )}
-    <div className="text-xs text-muted-foreground text-right">
-      {formData.justificativa.length}/{MAX_TEXT_LENGTH} caracteres
-    </div>
-  </div>
-
-  <div className="space-y-2">
-    <Label htmlFor="anexo" className="flex items-center gap-2 text-foreground">
-      <Upload className="w-4 h-4 text-primary" />
-      Anexo (opcional)
-    </Label>
-    <Input
-      id="anexo"
-      name="anexo"
-      type="file"
-      onChange={handleFileChange}
-      className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 overflow-hidden ${
-        errors.anexo ? 'border-destructive focus:border-destructive' : ''
-      }`}
-      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-    />
-    {errors.anexo && (
-      <p className="text-sm text-destructive">{errors.anexo}</p>
-    )}
-    <p className="text-xs text-muted-foreground">
-      Formatos aceitos: PDF, DOC, DOCX, JPG, PNG (máx. 10MB)
-    </p>
-  </div>
-</div>
-
-              <Button
-                type="submit"
-                disabled={isSubmitting || !validateRequiredFields().isValid}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 shadow-[var(--shadow-soft)] transition-all duration-200 hover:shadow-lg hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    Enviando...
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Campos pré-preenchidos (readonly) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="numeroSerie" className="flex items-center gap-2 text-foreground">
+                      <Printer className="w-4 h-4 text-primary" />
+                      Número de Série da Impressora <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="numeroSerie"
+                      name="numeroSerie"
+                      value={formData.numeroSerie}
+                      readOnly
+                      className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
+                        errors.numeroSerie ? 'border-destructive' : ''
+                      }`}
+                    />
+                    {errors.numeroSerie && (
+                      <p className="text-sm text-destructive">{errors.numeroSerie}</p>
+                    )}
                   </div>
-                ) : (
-                  "Enviar Justificativa"
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="serieSuprimento" className="flex items-center gap-2 text-foreground">
+                      <FileText className="w-4 h-4 text-primary" />
+                      Série do Suprimento <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="serieSuprimento"
+                      name="serieSuprimento"
+                      value={formData.serieSuprimento}
+                      readOnly
+                      className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
+                        errors.serieSuprimento ? 'border-destructive' : ''
+                      }`}
+                    />
+                    {errors.serieSuprimento && (
+                      <p className="text-sm text-destructive">{errors.serieSuprimento}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="dataUltimaLeitura" className="flex items-center gap-2 text-foreground">
+                      <Calendar className="w-4 h-4 text-primary" />
+                      Data/Hora da Última Leitura <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="dataUltimaLeitura"
+                      name="dataUltimaLeitura"
+                      type="datetime-local"
+                      value={formData.dataUltimaLeitura}
+                      readOnly
+                      className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
+                        errors.dataUltimaLeitura ? 'border-destructive' : ''
+                      }`}
+                    />
+                    {errors.dataUltimaLeitura && (
+                      <p className="text-sm text-destructive">{errors.dataUltimaLeitura}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="nivelUltimaLeitura" className="flex items-center gap-2 text-foreground">
+                      <Gauge className="w-4 h-4 text-primary" />
+                      Nível da Última Leitura (%) <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="nivelUltimaLeitura"
+                      name="nivelUltimaLeitura"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={formData.nivelUltimaLeitura}
+                      readOnly
+                      className={`bg-muted/50 text-muted-foreground cursor-not-allowed ${
+                        errors.nivelUltimaLeitura ? 'border-destructive' : ''
+                      }`}
+                    />
+                    {errors.nivelUltimaLeitura && (
+                      <p className="text-sm text-destructive">{errors.nivelUltimaLeitura}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="organizacao" className="flex items-center gap-2 text-foreground">
+                      <FileText className="w-4 h-4 text-primary" />
+                      Organização
+                    </Label>
+                    <Input
+                      id="organizacao"
+                      name="organizacao"
+                      value={formData.organizacao}
+                      readOnly
+                      className="bg-muted/50 text-muted-foreground cursor-not-allowed"
+                    />
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="codigoProjeto" className="flex items-center gap-2 text-foreground">
+                      <FileText className="w-4 h-4 text-primary" />
+                      Código do Projeto
+                    </Label>
+                    <Input
+                      id="codigoProjeto"
+                      name="codigoProjeto"
+                      value={formData.codigoProjeto}
+                      readOnly
+                      className="bg-muted/50 text-muted-foreground cursor-not-allowed"
+                    />
+                  </div>
+                </div>
+
+                {/* Campos editáveis */}
+                <div className="space-y-4 border-t border-border/50 pt-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="emailJustificou" className="flex items-center gap-2 text-foreground">
+                      <FileText className="w-4 h-4 text-primary" />
+                      Insira seu E-mail <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="emailJustificou"
+                      name="emailJustificou"
+                      type="email"
+                      value={formData.emailJustificou}
+                      onChange={handleInputChange}
+                      placeholder="seuemail@exemplo.com"
+                      className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary ${
+                        errors.emailJustificou ? 'border-destructive focus:border-destructive' : ''
+                      }`}
+                      required
+                    />
+                    {errors.emailJustificou && (
+                      <p className="text-sm text-destructive">{errors.emailJustificou}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="justificativa" className="flex items-center gap-2 text-foreground">
+                      <FileText className="w-4 h-4 text-primary" />
+                      Justificativa (15-250 caracteres) <span className="text-destructive">*</span>
+                    </Label>
+                    <Textarea
+                      id="justificativa"
+                      name="justificativa"
+                      value={formData.justificativa}
+                      onChange={handleInputChange}
+                      placeholder="Descreva o motivo da troca prematura do suprimento..."
+                      className={`min-h-[120px] bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary resize-none ${
+                        errors.justificativa ? 'border-destructive focus:border-destructive' : ''
+                      }`}
+                      required
+                      maxLength={MAX_TEXT_LENGTH}
+                    />
+                    {errors.justificativa && (
+                      <p className="text-sm text-destructive">{errors.justificativa}</p>
+                    )}
+                    <div className="text-xs text-muted-foreground text-right">
+                      {formData.justificativa.length}/{MAX_TEXT_LENGTH} caracteres
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="anexo" className="flex items-center gap-2 text-foreground">
+                      <Upload className="w-4 h-4 text-primary" />
+                      Anexo (opcional)
+                    </Label>
+                    <Input
+                      id="anexo"
+                      name="anexo"
+                      type="file"
+                      onChange={handleFileChange}
+                      className={`bg-input border-border focus:ring-[var(--shadow-focus)] focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 overflow-hidden ${
+                        errors.anexo ? 'border-destructive focus:border-destructive' : ''
+                      }`}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {errors.anexo && (
+                      <p className="text-sm text-destructive">{errors.anexo}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      Formatos aceitos: PDF, DOC, DOCX, JPG, PNG (máx. 10MB)
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || !validateRequiredFields().isValid}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 shadow-[var(--shadow-soft)] transition-all duration-200 hover:shadow-lg hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                      Enviando...
+                    </div>
+                  ) : (
+                    "Enviar Justificativa"
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="text-center mt-8 text-sm text-muted-foreground">
           <p>© 2024 TECHUB - Sistema de Controle de Suprimentos</p>
